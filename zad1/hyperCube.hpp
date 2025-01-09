@@ -19,12 +19,8 @@ int zeroCount(int x, int k) {
 class Hypercube {
 private:
     int k;
-    int augmentPathCount;
     int n;
-    std::vector<std::vector<int>> edges;
-    std::vector<std::vector<int>> capacity;
-    std::vector<std::vector<int>> flow;
-    
+    int augmentPathCount;
 
     bool areConnected(int i, int j) {
         int diff = i ^ j;
@@ -70,13 +66,17 @@ private:
     }
 
 public:
+    std::vector<std::vector<int>> edges;
+    std::vector<std::vector<int>> capacity;
+    std::vector<std::vector<int>> flow;
+
     Hypercube(int k) : k(k), augmentPathCount(0), n(1 << k) {
-        edges.resize(n); // 2^k wierzchołków
+        edges.resize(n);
         capacity.assign(n, std::vector<int>(n, 0));
         flow.assign(n, std::vector<int>(n, 0));
-        for (int i = 0; i < (n); ++i) {
+        for (int i = 0; i < (n); i++) {
             int hamming_i = hammingWeight(i);
-            for (int j = i + 1; j < (n); ++j) {
+            for (int j = i + 1; j < (n); j++) {
                 int hamming_j = hammingWeight(j);
                 if (areConnected(i, j) && hamming_i < hamming_j) {
                     int weight = randomWeight(i, j);
@@ -88,19 +88,10 @@ public:
     }
 
     void printEdges() const {
-        for (int i = 0; i < (n); ++i) {
+        for (int i = 0; i < (n); i++) {
             std::cout << "Wierzcholek " << i << " (binarne: " << std::bitset<17>(i) << "):\n";
             for (int v : edges[i]) {
                 std::cout << "  --> Wierzcholek " << v << " (binarne: " << std::bitset<17>(v) << "), Waga: " << capacity[i][v] << "\n";
-            }
-        }
-    }
-
-    void printFlow() const {
-        std::cout << "Przeplywy:\n";
-        for (int i = 0; i < (n); ++i) {
-            for (int v : edges[i]) {
-                std::cout << i << " -> " << v << ": " << flow[i][v] << "\n";
             }
         }
     }
@@ -121,10 +112,8 @@ public:
                 flow[u][v] += pathFlow;
                 flow[v][u] -= pathFlow;
             }
-
             maxFlow += pathFlow;
         }
-
         return maxFlow;
     }
 
