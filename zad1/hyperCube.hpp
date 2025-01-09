@@ -96,6 +96,15 @@ public:
         }
     }
 
+    void printFlow() const {
+        std::cout << "Przeplywy:\n";
+        for (int i = 0; i < 1 << k; ++i) {
+            for (int v : edges[i]) {
+                std::cout << i << " -> " << v << ": " << flow[i][v] << "\n";
+            }
+        }
+    }
+
     int edmondsKarp(int source, int target) {
         int maxFlow = 0;
         std::vector<int> parent(n, -1);

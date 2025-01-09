@@ -1,8 +1,0 @@
-1:  
-Zaimplementowac kalse grafu dwudzielnego, który ma dwa rozłaczne podzbiory wierzchołków V1 oraz V2, kazdy o mocy 2^k. 
-Krawedzie grafu generowane sa w taki sposób,
-ze kazdy wierzchołek z V1 ma i sasiadow z V2 wybranych niezaleznie i jednostajnie losowo
-
-
-2:
-zaimplementowac bfs, dfs i algorytm Hopcroft-Karp.

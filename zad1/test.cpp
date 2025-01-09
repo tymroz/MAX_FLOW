@@ -27,12 +27,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Maksymalny przeplyw: " << maxFlow << std::endl; 
     if (printFlow) {
-        std::cout << "Przeplywy:\n";
-        for (int i = 0; i < 1 << k; ++i) {
-            for (int v : hypercube.edges[i]) {
-                std::cout << i << " -> " << v << ": " << hypercube.flow[i][v] << "\n";
-            }
-        }
+        hypercube.printFlow();
     }
 
     std::cerr << "Liczba sciezek powiekszajacych: " << au << std::endl; 
