@@ -132,59 +132,59 @@ public:
     }
 
     void exportToGMPL(const std::string& filename) {
-    std::ofstream file(filename);
+        std::ofstream file(filename);
 
-    file << "set U;  # Zbior wierzcholkow w V1\n";
-    file << "set V;  # Zbior wierzcholkow w V2\n";
-    file << "param edges{U, V}, binary;  # Macierz sasiedztwa\n\n";
+        file << "set U;  # Zbior wierzcholkow w V1\n";
+        file << "set V;  # Zbior wierzcholkow w V2\n";
+        file << "param edges{U, V}, binary;  # Macierz sasiedztwa\n\n";
 
-    file << "var x{U, V}, binary;  # Zmienna: 1, jesli krawedz nalezy do skojarzenia\n\n";
+        file << "var x{U, V}, binary;  # Zmienna: 1, jesli krawedz nalezy do skojarzenia\n\n";
 
-    file << "maximize total_matching: sum{u in U, v in V} x[u, v];  # Funkcja celu: Maksymalizacja liczby krawedzi\n\n";
+        file << "maximize total_matching: sum{u in U, v in V} x[u, v];  # Funkcja celu: Maksymalizacja liczby krawedzi\n\n";
 
-    file << "s.t. max_one_edge_per_v1{u in U}: sum{v in V} x[u, v] <= 1;  # Kazdy wierzcholek z V1 moze miec co najwyzej jedna krawedz w maks. skojarzeniu\n";
-    file << "s.t. max_one_edge_per_v2{v in V}: sum{u in U} x[u, v] <= 1;  # Kazdy wierzcholek z V2 moze miec co najwyzej jedna krawedz w maks. skojarzeniu\n\n";
-    file << "s.t. edge_existence{u in U, v in V}: x[u, v] <= edges[u, v];\n\n";
+        file << "s.t. max_one_edge_per_v1{u in U}: sum{v in V} x[u, v] <= 1;  # Kazdy wierzcholek z V1 moze miec co najwyzej jedna krawedz w maks. skojarzeniu\n";
+        file << "s.t. max_one_edge_per_v2{v in V}: sum{u in U} x[u, v] <= 1;  # Kazdy wierzcholek z V2 moze miec co najwyzej jedna krawedz w maks. skojarzeniu\n\n";
+        file << "s.t. edge_existence{u in U, v in V}: x[u, v] <= edges[u, v];\n\n";
 
-    file << "solve;\n\n";
+        file << "solve;\n\n";
 
-    file << "printf \"Wielkosc skojarzenia: %d\\n\", total_matching;\n";
-    file << "printf \"Krawedzie w skojarzeniu:\\n\";\n";
-    file << "for {u in U, v in V: x[u,v] > 0} {\n";
-    file << "   printf \"(%d, %d)\\n\", u, v;\n";
-    file << "}\n\n";
+        file << "printf \"Wielkosc skojarzenia: %d\\n\", total_matching;\n";
+        file << "printf \"Krawedzie w skojarzeniu:\\n\";\n";
+        file << "for {u in U, v in V: x[u,v] > 0} {\n";
+        file << "   printf \"(%d, %d)\\n\", u, v;\n";
+        file << "}\n\n";
 
-    file << "data;\n";
-    file << "set U := ";
-    for (int u = 0; u < n; u++) {
-        file << u << " ";
-    }
-    file << ";\n";
-
-    file << "set V := ";
-    for (int v = 0; v < n; v++) {
-        file << v << " ";
-    }
-    file << ";\n";
-
-    file << "param edges : ";
-    for (int v = 0; v < n; v++) {
-        file << v << " ";
-    }
-    file << " :=\n";
-
-    for (int u = 0; u < n; u++) {
-        file << u << " ";
-        for (int v = 0; v < n; v++) {
-            file << edges[u][v] << " ";
+        file << "data;\n";
+        file << "set U := ";
+        for (int u = 0; u < n; u++) {
+            file << u << " ";
         }
-        file << "\n";
-    }
-    file << ";\n";
+        file << ";\n";
 
-    file << "end;\n";
-    file.close();
-    std::cout << "Model zapisano do pliku " << filename << std::endl;
-}
+        file << "set V := ";
+        for (int v = 0; v < n; v++) {
+            file << v << " ";
+        }
+        file << ";\n";
+
+        file << "param edges : ";
+        for (int v = 0; v < n; v++) {
+            file << v << " ";
+        }
+        file << " :=\n";
+
+        for (int u = 0; u < n; u++) {
+            file << u << " ";
+            for (int v = 0; v < n; v++) {
+                file << edges[u][v] << " ";
+            }
+            file << "\n";
+        }
+        file << ";\n";
+
+        file << "end;\n";
+        file.close();
+        std::cout << "Model zapisano do pliku " << filename << std::endl;
+    }
 
 };

@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
     int k;
     int i;
     bool printMatching = false;
-    std::string filename = "test.mod";
+    std::string filename;
     bool glpk = false;
 
     for (int j = 1; j < argc; j++) {
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     }
 
     BipartieGraph graph(k, i);
-    graph.displayGraph();
+    //graph.displayGraph();
 
     auto start = std::chrono::high_resolution_clock::now();
     int maxMatching = graph.hopcroftKarp();
