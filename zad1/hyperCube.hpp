@@ -5,6 +5,7 @@
 #include <functional>
 #include <queue>
 #include <limits>
+#include <fstream>
 
 int INF = std::numeric_limits<int>::max();
 
@@ -74,9 +75,9 @@ public:
         edges.resize(n);
         capacity.assign(n, std::vector<int>(n, 0));
         flow.assign(n, std::vector<int>(n, 0));
-        for (int i = 0; i < (n); i++) {
+        for (int i = 0; i < n; i++) {
             int hamming_i = hammingWeight(i);
-            for (int j = i + 1; j < (n); j++) {
+            for (int j = i + 1; j < n; j++) {
                 int hamming_j = hammingWeight(j);
                 if (areConnected(i, j) && hamming_i < hamming_j) {
                     int weight = randomWeight(i, j);
@@ -105,7 +106,7 @@ public:
         }
     }
 
-    int edmondsKarp(int source, int target) {
+    int edmondsKarp(int& source, int& target) {
         int maxFlow = 0;
         std::vector<int> parent(n, -1);
 
@@ -128,6 +129,62 @@ public:
 
     int getAugmentingPathsCount() const {
         return augmentPathCount;
+    }
+
+    void exportToGMPL(const std::string& filename, int& s, int& t) {
+        std::ofstream file(filename);
+
+        file << "set V;  # Zbior wierzcholkow\n";
+        file << "set E within (V cross V);  # Zbior krawedzi\n";
+        file << "param capacity{(i,j) in E} >= 0;  # Pojemnosc krawedzi\n";
+        file << "param s >= 0;  # Wierzcholek startowy\n";
+        file << "param t > 0;  # Wierzcholek koncowy\n";
+        file << "var flow{(i,j) in E} >= 0;  # Przeplyw po krawedzi\n";
+        file << "var totalFlow;  # Maksymalny przeplyw\n\n";
+
+        file << "maximize total_flow: sum{(s,j) in E} flow[s,j];  # Funkcja celu: Maksymalizacja przeplywu\n\n";
+
+        file << "s.t. flow_less_than_capacity{(u, v) in E}:  flow[u,v] <= capacity[u,v];  # Przeplyw musi byc mniejszy niz pojemnosc krawedzi\n";
+        file << "s.t. flow_conservation{v in V diff {s,t}}: sum{u in V: (u,v) in E} flow[u,v] = sum{w in V: (v,w) in E} flow[v,w];  # Przeplyw wchodzacy do wierzcholka musi byc rowny przzeplywowi wychodzacemu\n\n";
+        
+        file << "solve;\n\n";
+
+        file << "printf \"Wielkosc maksymalnego przeplywu: %d\\n\", total_flow;\n";
+        file << "printf \"Przeplyw na krawedziach:\\n\";\n";
+        file << "for {(u,v) in E: flow[u,v] > 0} {\n";
+        file << "   printf \"(%d, %d): %d\\n\", u, v, flow[u,v];\n";
+        file << "}\n\n";
+
+        file << "data;\n";
+
+        file << "set V := ";
+        for (int v = 0; v < n; v++) {
+            file << v << " ";
+        }
+        file << ";\n";
+
+        file << "set E := ";
+        for (int i = 0; i < n; ++i) {
+            for (int v : edges[i]) {
+                file << "(" << i << "," << v << ") ";
+            }
+        }
+        file << ";\n";
+
+        file << "param capacity :=\n";
+        for (int i = 0; i < n; ++i) {
+            for (int v : edges[i]) {
+                file  << i << " " << v << " " << capacity[i][v] << "\n";
+            }
+        }
+        file << ";\n";
+
+        file << "param s := " << s << ";\n";
+        file << "param t := " << t << ";\n";
+
+        file << "end;\n";
+        file.close();
+        std::cout << "Model zapisano do pliku " << filename << std::endl;
     }
 
 };
