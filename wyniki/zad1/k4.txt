@@ -1,0 +1,4 @@
+k: 4
+Sredni maksymalny przeplyw: 26.2
+Sredni czas dzialania programu [microsec]: 39.2
+Srednia liczba sciezek powiekszajacych: 9.8
