@@ -1,4 +1,3 @@
-```markdown
 # MAX_FLOW Project
 
 ## Project Description
@@ -50,10 +49,3 @@ g++ -o flow hypercube_flow/flow.cpp -std=c++11
 
 ## Experiments
 Experiments can be run using the `flow.cpp`, `matching.cpp`, or `dinic.cpp` files in each task. Results are saved in text files, e.g., `data.txt` or `k<size>.txt`.
-
-## Authors
-The project was completed as part of the Discrete Analysis and Optimization course.
-
-## License
-This project is distributed under the MIT License.
-```
