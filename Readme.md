@@ -43,8 +43,8 @@ src/
 Each task can be compiled and executed separately. Example for the Hypercube Flow task:
 
 ```bash
-g++ -o flow hypercube_flow/flow.cpp -std=c++11
-./flow --size 4 --printFlow
+g++ -o eksp hypercube_flow/eksp.cpp
+./eksp --size 4 --printFlow
 ```
 
 ## Experiments
